@@ -2,6 +2,7 @@
 #include "src/node/node.h"
 #include "src/executor/executor.h"
 #include "memory"
+#include <thread>
 
 int main() {
     int seed = 400;
@@ -11,10 +12,15 @@ int main() {
     auto scheduler = std::make_shared<Scheduler::DeterministicScheduler>(executor, rng, clock);
     auto system = std::make_shared<System::System>(executor, scheduler, clock);
 
-    Node::Task sleep_looper_coro = Node::NodeMainLoop(scheduler, 100);
+    std::cout << "Simulation starting" << std::endl;
 
+    Node::Task sleep_looper_coro = Node::NodeMainLoop(scheduler, 100);
     for(int i=0;i<10000;i++) {
         system->tick();
+        clock->tick();
     }
+
+    std::cout << "Simulation finished" << std::endl;
+
 
 }

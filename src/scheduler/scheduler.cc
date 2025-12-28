@@ -2,6 +2,8 @@
 #include "src/executor/executor.h"
 #include "src/rng/rng.h"
 #include <memory>
+#include <iostream>
+#include <thread>
 
 namespace Scheduler {
 
@@ -15,12 +17,14 @@ void DeterministicScheduler::schedule_task(std::function<void()> task) {
     int jitter = rng_->draw();
     int now = clock_->now();
     executor_->push_task(std::move(task), now + jitter);
+    std::cout << "[Scheduler] time = " << now << ", scheduled for time " << now + jitter << std::endl;
 }        
 
 void DeterministicScheduler::schedule_task_with_delay(std::function<void()> task, int delay) {
     int now = clock_->now();
     int jitter = rng_->draw();
     executor_->push_task(std::move(task), now + delay + jitter);
+    std::cout << "[Scheduler]  time = " << now << ", scheduled for time " << now + delay + jitter << std::endl;
 }
 
 }

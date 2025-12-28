@@ -3,6 +3,7 @@
 #include <queue>
 #include <atomic>
 #include <stdexcept>
+#include <iostream>
 
 namespace Executor {
 
@@ -26,6 +27,7 @@ void PriorityQueueExecutor::run_until_blocked() {
         if (front_task.time > clock_->now()) {
             break;
         }
+        std::cout << "[Executor] Pulled task at instant " << clock_->now() << std::endl;
         tasks_.pop();
         front_task.task();
     }

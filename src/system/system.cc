@@ -13,7 +13,7 @@ System::System(
 
 
 void System::tick() {
-
+    executor_->run_until_blocked();
 }
 
 SleepRequest::SleepRequest(int delay, std::shared_ptr<Scheduler::Scheduler> scheduler)

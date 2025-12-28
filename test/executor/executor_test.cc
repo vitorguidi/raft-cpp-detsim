@@ -12,7 +12,7 @@ TEST(SchedulerTest, AllTasksRun) {
     auto lambda = [&buffer, i]() {
       buffer.push_back(i);
     };
-    pqe->push_task(lambda, 10-i);
+    pqe->push_task(std::move(lambda), 10-i);
   }
   
   ASSERT_TRUE(buffer.empty());

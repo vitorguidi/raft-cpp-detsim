@@ -1,6 +1,6 @@
 Milestones:
 
-1 - One node requests random sleep
+1 - One node requests random sleep DONE
 2 - N nodes request random sleep
 3 - N nodes choose a target node at random and ping them
     - this demands implementing the server coroutine

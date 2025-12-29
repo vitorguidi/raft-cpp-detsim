@@ -2,28 +2,33 @@
 #include "src/scheduler/scheduler.h"
 #include <memory>
 #include <coroutine>
+#include <iostream>
 
 namespace System {
 
+// System stuff
 System::System(
         std::shared_ptr<Executor::Executor> executor,
         std::shared_ptr<Scheduler::Scheduler> scheduler,
-        std::shared_ptr<Clock::Clock> clock)
-        : executor_(std::move(executor)), scheduler_(std::move(scheduler)), clock_(std::move(clock)) {}
-
-
+        std::shared_ptr<Clock::Clock> clock,
+        std::shared_ptr<RNG::RNG> rng)
+        : executor_(std::move(executor)), scheduler_(std::move(scheduler)), clock_(std::move(clock)), rng_(rng) {}
 void System::tick() {
     executor_->run_until_blocked();
 }
+long long int System::get_time() {return clock_->now();}
+int System::random_range(int lo, int hi) {return rng_->draw(lo, hi);}
+System::SleepRequest System::sleep(int delay) {return System::SleepRequest(delay, scheduler_);}
 
-SleepRequest::SleepRequest(int delay, std::shared_ptr<Scheduler::Scheduler> scheduler)
-    : delay_(delay), scheduler_(std::move(scheduler)) {}
-bool SleepRequest::await_ready() {return false;}
-void SleepRequest::await_suspend(std::coroutine_handle<> h) const {
+
+// SleepRequest stuff
+System::SleepRequest::SleepRequest(int delay, std::shared_ptr<Scheduler::Scheduler> sched) : delay_(delay), sched_(sched) {}
+bool System::SleepRequest::await_ready() {return false;}
+void System::SleepRequest::await_suspend(std::coroutine_handle<> h) const {
     auto resumer_lambda = [h]() {
         h.resume();
     };
-    scheduler_->schedule_task_with_delay(std::move(resumer_lambda), delay_);
+    sched_->schedule_task_with_delay(std::move(resumer_lambda), delay_);
 }
-void SleepRequest::await_resume() const noexcept {}
+void System::SleepRequest::await_resume() const noexcept {}
 } // namespace System

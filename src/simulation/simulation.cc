@@ -6,21 +6,21 @@
 
 int main() {
     int seed = 400;
-    auto rng = std::make_shared<RNG::UniformDistributionRange>(seed, 0, 100);
+    auto rng = std::make_shared<RNG::UniformDistributionRange>(seed);
     auto clock = std::make_shared<Clock::DeterministicClock>();
     auto executor = std::make_shared<Executor::PriorityQueueExecutor>(clock);
-    auto scheduler = std::make_shared<Scheduler::DeterministicScheduler>(executor, rng, clock);
-    auto system = std::make_shared<System::System>(executor, scheduler, clock);
+    auto scheduler = std::make_shared<Scheduler::DeterministicScheduler>(executor, rng, clock, 100);
+    auto system = std::make_shared<System::System>(executor, scheduler, clock, rng);
 
     std::cout << "Simulation starting" << std::endl;
 
-    Node::Task sleep_looper_coro = Node::NodeMainLoop(scheduler, 100);
+    Node::SleeperNode single_node(0, system);
+    auto coro = single_node.main_loop();
     for(int i=0;i<10000;i++) {
         system->tick();
         clock->tick();
     }
 
     std::cout << "Simulation finished" << std::endl;
-
 
 }

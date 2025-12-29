@@ -21,13 +21,15 @@ private:
     std::shared_ptr<Executor::Executor> executor_;
     std::shared_ptr<RNG::RNG> rng_;
     std::shared_ptr<Clock::Clock> clock_;
+    int base_jitter_;
 public:
     void schedule_task(std::function<void()> task) override;
     void schedule_task_with_delay(std::function<void()> task, int delay) override;
     DeterministicScheduler(
         std::shared_ptr<Executor::Executor> executor,
         std::shared_ptr<RNG::RNG> rng,
-        std::shared_ptr<Clock::Clock> clock
+        std::shared_ptr<Clock::Clock> clock,
+        int base_jitter
     );
     ~DeterministicScheduler() = default;
 };

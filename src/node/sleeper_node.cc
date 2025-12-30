@@ -4,7 +4,7 @@
 
 namespace Node {
 
-Task SleeperNode::main_loop() {
+LoopTask SleeperNode::main_loop() {
     std::cout << "[Looper thread] Starting looper" << std::endl;
     for(int i=0;i<10;i++) {
         std::cout << "[Looper thread]Sleeping before co await" << std::endl;

@@ -11,8 +11,7 @@
 
 namespace Node {
 
-
-class Task;
+class LoopTask;
 
 class Node {
 friend class SleeperNode;
@@ -20,21 +19,20 @@ public:
     int id_;
     std::shared_ptr<System::System> system_;
     Node(int id, std::shared_ptr<System::System> system): id_(id), system_(system) {}
-    virtual Task main_loop() = 0;
+    virtual LoopTask main_loop() = 0;
 };
 
 class SleeperNode : public Node {
 public:
     SleeperNode(int id, std::shared_ptr<System::System> system) : Node(id, system) {}
-    Task main_loop() override;
+    LoopTask main_loop() override;
 };
 
-
-class Task {
+class LoopTask {
 public:
     struct promise_type {
         std::shared_ptr<System::System> sys_;
-        Task get_return_object() {return {};}
+        LoopTask get_return_object() {return {};}
         // this intercepts the same arguments with which the coro is called
         // Since I am returning the coro from within the node, the compiler automagically
         // passes a Node& reference to the promise_type constructor.

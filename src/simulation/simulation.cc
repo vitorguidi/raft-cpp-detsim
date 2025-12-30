@@ -1,5 +1,5 @@
 #include "src/rng/rng.h"
-#include "src/node/node.h"
+#include "src/system/system.h"
 #include "src/executor/executor.h"
 #include "memory"
 #include <thread>
@@ -14,8 +14,9 @@ int main() {
 
     std::cout << "Simulation starting" << std::endl;
 
-    Node::SleeperNode single_node(0, system);
-    auto coro = single_node.main_loop();
+    auto single_node = std::make_shared<System::SleeperNode>(0, system);
+    system->add_node(single_node);
+    auto coro = single_node->main_loop();
     for(int i=0;i<10000;i++) {
         system->tick();
         clock->tick();

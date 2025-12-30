@@ -3,6 +3,7 @@
 #include <memory>
 #include <coroutine>
 #include <iostream>
+#include <vector>
 
 namespace System {
 
@@ -12,7 +13,13 @@ System::System(
         std::shared_ptr<Scheduler::Scheduler> scheduler,
         std::shared_ptr<Clock::Clock> clock,
         std::shared_ptr<RNG::RNG> rng)
-        : executor_(std::move(executor)), scheduler_(std::move(scheduler)), clock_(std::move(clock)), rng_(rng) {}
+        : executor_(std::move(executor)),
+            scheduler_(std::move(scheduler)),
+            clock_(std::move(clock)),
+            rng_(std::move(rng)) {}
+
+void System::add_node(std::shared_ptr<Node> node) {nodes_.push_back(node);}
+
 void System::tick() {
     executor_->run_until_blocked();
 }

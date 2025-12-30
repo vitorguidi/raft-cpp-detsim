@@ -2,17 +2,19 @@ Milestones:
 
 1 - One node requests random sleep DONE
 
-2 - N nodes request random sleep
+2 - N nodes request random sleep    DONE
 
-3 - N nodes choose a target node at random and ping them
+3 - N nodes choose a target node at random and ping them    DONE
 
     - this demands implementing the server coroutine
 
     - also requires a rpc listener that spawns a coroutine to handle request
 
-4 - raft leader election
+4 - Refactor system/node to break circular dependency, add a messaging layer
 
-5 - raft log replication + clients
+5 - raft leader election
+
+6 - raft log replication + clients
 
 
 class system

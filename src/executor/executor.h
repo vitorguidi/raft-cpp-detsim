@@ -23,12 +23,14 @@ public:
     virtual ~Executor() = default;
     virtual void push_task(std::function<void()> task, long long int time) = 0;
     virtual void run_until_blocked() = 0;
+    virtual bool has_work() = 0;
 };
 
 class PriorityQueueExecutor : public Executor {
 public:
     void push_task(std::function<void()> task, long long int time) override;
     void run_until_blocked() override;
+    bool has_work() {return !tasks_.empty();}
     PriorityQueueExecutor(std::shared_ptr<Clock::Clock> clk);
     ~PriorityQueueExecutor() = default;
 private:

@@ -14,17 +14,10 @@ int main() {
 
     std::cout << "Simulation starting" << std::endl;
 
-    std::vector<System::LoopTask> coros;
-
-    for(int i=0;i<5;i++) {
-        auto pinger_node = std::make_shared<System::PingerNode>(i, system);
-        system->add_node(pinger_node);
-        coros.push_back(pinger_node->main_loop());
-    }
-
-    // expecting 30 iterations * 5 nodes = 150 pings, 150 pongs
-
-    while(system->executor_->has_work()) {
+    auto single_node = std::make_shared<System::SleeperNode>(0, system);
+    system->add_node(single_node);
+    auto coro = single_node->main_loop();
+    for(int i=0;i<10000;i++) {
         system->tick();
         clock->tick();
     }

@@ -27,7 +27,7 @@ long long int System::get_time() {return clock_->now();}
 int System::random_range(int lo, int hi) {return rng_->draw(lo, hi);}
 System::SleepRequest System::sleep(int delay) {return System::SleepRequest(delay, scheduler_);}
 
- 
+
 // SleepRequest stuff
 System::SleepRequest::SleepRequest(int delay, std::shared_ptr<Scheduler::Scheduler> sched) : delay_(delay), sched_(sched) {}
 bool System::SleepRequest::await_ready() {return false;}

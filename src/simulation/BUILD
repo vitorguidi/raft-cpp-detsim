@@ -12,5 +12,6 @@ cc_binary(
         "//src/executor:executor",
         "//src/scheduler:scheduler",
         "//src/system:system",
+        "//src/node:node",
     ],
 )

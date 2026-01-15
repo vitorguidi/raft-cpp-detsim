@@ -2,13 +2,12 @@ load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 
 cc_library(
-    name = "system",
-    srcs = ["system.cc"],
-    hdrs = ["system.h"],
+    name = "node",
+    srcs = ["sleeper_node.cc"],
+    hdrs = ["node.h"],
     deps = [
         "//src/scheduler:scheduler",
-        "//src/rng:rng",
-        "//src/clock:clock",
+        "//src/system:system",
     ],
     visibility = ["//visibility:public"],
 )

@@ -3,7 +3,6 @@
 #include <memory>
 #include <coroutine>
 #include <iostream>
-#include <vector>
 
 namespace System {
 
@@ -12,11 +11,7 @@ System::System(
         std::shared_ptr<Scheduler::Scheduler> scheduler,
         std::shared_ptr<Clock::Clock> clock,
         std::shared_ptr<RNG::RNG> rng)
-        :   scheduler_(std::move(scheduler)),
-            clock_(std::move(clock)),
-            rng_(std::move(rng)) {}
-
-void System::add_node(std::shared_ptr<Node> node) {nodes_.push_back(node);}
+        : scheduler_(std::move(scheduler)), clock_(std::move(clock)), rng_(rng) {}
 
 long long int System::get_time() {return clock_->now();}
 int System::random_range(int lo, int hi) {return rng_->draw(lo, hi);}

@@ -1,7 +1,8 @@
+#include "src/node/node.h"
 #include "src/system/system.h"
 #include <memory>
 
-namespace System {
+namespace Node {
 
 LoopTask SleeperNode::main_loop() {
     std::cout << "[Looper thread] Starting looper" << std::endl;

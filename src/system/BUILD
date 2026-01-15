@@ -7,7 +7,6 @@ cc_library(
     hdrs = ["system.h"],
     deps = [
         "//src/scheduler:scheduler",
-        "//src/executor:executor",
         "//src/rng:rng",
         "//src/clock:clock",
     ],

@@ -9,20 +9,15 @@ namespace System {
 
 // System stuff
 System::System(
-        std::shared_ptr<Executor::Executor> executor,
         std::shared_ptr<Scheduler::Scheduler> scheduler,
         std::shared_ptr<Clock::Clock> clock,
         std::shared_ptr<RNG::RNG> rng)
-        : executor_(std::move(executor)),
-            scheduler_(std::move(scheduler)),
+        :   scheduler_(std::move(scheduler)),
             clock_(std::move(clock)),
             rng_(std::move(rng)) {}
 
 void System::add_node(std::shared_ptr<Node> node) {nodes_.push_back(node);}
 
-void System::tick() {
-    executor_->run_until_blocked();
-}
 long long int System::get_time() {return clock_->now();}
 int System::random_range(int lo, int hi) {return rng_->draw(lo, hi);}
 System::SleepRequest System::sleep(int delay) {return System::SleepRequest(delay, scheduler_);}

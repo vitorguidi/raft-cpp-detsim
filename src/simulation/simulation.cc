@@ -10,7 +10,7 @@ int main() {
     auto clock = std::make_shared<Clock::DeterministicClock>();
     auto executor = std::make_shared<Executor::PriorityQueueExecutor>(clock);
     auto scheduler = std::make_shared<Scheduler::DeterministicScheduler>(executor, rng, clock, 100);
-    auto system = std::make_shared<System::System>(executor, scheduler, clock, rng);
+    auto system = std::make_shared<System::System>(scheduler, clock, rng);
 
     std::cout << "Simulation starting" << std::endl;
 
@@ -18,8 +18,8 @@ int main() {
     system->add_node(single_node);
     auto coro = single_node->main_loop();
     for(int i=0;i<10000;i++) {
-        system->tick();
         clock->tick();
+        executor->run_until_blocked();
     }
 
     std::cout << "Simulation finished" << std::endl;

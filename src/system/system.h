@@ -17,20 +17,17 @@ class Node;
 
 class System {
 public:
-    std::shared_ptr<Executor::Executor> executor_;
     std::shared_ptr<Scheduler::Scheduler> scheduler_;
     std::shared_ptr<Clock::Clock> clock_;
     std::shared_ptr<RNG::RNG> rng_;
     std::vector<std::shared_ptr<Node>> nodes_;
     System(
-        std::shared_ptr<Executor::Executor> executor,
         std::shared_ptr<Scheduler::Scheduler> scheduler,
         std::shared_ptr<Clock::Clock> clock,
         std::shared_ptr<RNG::RNG> rng);
     void add_node(std::shared_ptr<Node> node);
     int random_range(int lo, int hi);
     long long int get_time();
-    void tick();
     class SleepRequest;
     SleepRequest sleep(int delay);
     template<typename T, typename U>

@@ -18,23 +18,35 @@ public:
     System(
         std::shared_ptr<Scheduler::Scheduler> scheduler,
         std::shared_ptr<Clock::Clock> clock,
-        std::shared_ptr<RNG::RNG> rng);
-    int random_range(int lo, int hi);
-    long long int get_time();
+        std::shared_ptr<RNG::RNG> rng)
+        : scheduler_(std::move(scheduler)),
+          clock_(std::move(clock)),
+          rng_(rng) {}
+    int random_range(int lo, int hi) {return rng_->draw(lo, hi);}
+    long long int get_time() {return clock_->now();}
     class SleepRequest;
     SleepRequest sleep(int delay);
 };
 
 class System::SleepRequest {
-    private:
-        int delay_;
-        std::shared_ptr<Scheduler::Scheduler> sched_;
-    public:
-        SleepRequest(int delay, std::shared_ptr<Scheduler::Scheduler> sched_);
-        bool await_ready();
-        void await_suspend(std::coroutine_handle<> h) const;
-        void await_resume() const noexcept;
+private:
+    int delay_;
+    std::shared_ptr<Scheduler::Scheduler> sched_;
+public:
+    SleepRequest(System& sys, int delay) : delay_(delay), sched_(sys.scheduler_) {}
+    bool await_ready() {return false;}
+    void await_suspend(std::coroutine_handle<> h) const {
+        auto resumer_lambda = [h]() {
+            h.resume();
+        };
+        sched_->schedule_task_with_delay(std::move(resumer_lambda), delay_);
+    }
+    void await_resume() const noexcept {}
 };
+
+inline System::SleepRequest System::sleep(int delay) {
+    return SleepRequest(*this, delay);
+}
 
 } // namespace System
 #endif //

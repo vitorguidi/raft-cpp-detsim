@@ -36,6 +36,9 @@ public:
     void request_work(std::function<void()> task) {
         scheduler_->schedule_task(task);
     }
+    void send_message(IO::Envelope msg) {
+        network_->push_entry(msg);
+    }
     int random_range(int lo, int hi) {return rng_->draw(lo, hi);}
     long long int get_time() {return clock_->now();}
     int register_pending_rpc(std::coroutine_handle<> h, int from, int to, IO::MessageName name, IO::Message msg) {

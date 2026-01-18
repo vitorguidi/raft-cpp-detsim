@@ -18,6 +18,8 @@ void PriorityQueueExecutor::push_task(std::function<void()> task, long long int 
 PriorityQueueExecutor::PriorityQueueExecutor(std::shared_ptr<Clock::Clock> clk)
     :   clock_(std::move(clk)), task_counter_(0) {}
 
+bool PriorityQueueExecutor::has_work() {return !tasks_.empty();}
+
 void PriorityQueueExecutor::run_until_blocked() {
     while(true) {
         if (tasks_.empty()) {

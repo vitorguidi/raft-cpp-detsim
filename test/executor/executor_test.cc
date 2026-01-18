@@ -18,6 +18,7 @@ TEST(SchedulerTest, AllTasksRun) {
   ASSERT_TRUE(buffer.empty());
 
   for(int i=1;i<=10;i++) {
+    ASSERT_TRUE(pqe->has_work());
     clk->tick();
     pqe->run_until_blocked();
     ASSERT_EQ(buffer.size(), i);

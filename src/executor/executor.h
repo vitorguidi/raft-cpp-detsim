@@ -29,6 +29,7 @@ class PriorityQueueExecutor : public Executor {
 public:
     void push_task(std::function<void()> task, long long int time) override;
     void run_until_blocked() override;
+    bool has_work();
     PriorityQueueExecutor(std::shared_ptr<Clock::Clock> clk);
     ~PriorityQueueExecutor() = default;
 private:

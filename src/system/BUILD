@@ -9,6 +9,7 @@ cc_library(
         "//src/scheduler:scheduler",
         "//src/rng:rng",
         "//src/clock:clock",
+        "//src/io:io"
     ],
     visibility = ["//visibility:public"],
 )

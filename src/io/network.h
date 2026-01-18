@@ -1,3 +1,6 @@
+#ifndef _NETWORK_H_
+#define _NETWORK_H_
+
 #include <coroutine>
 #include <vector>
 #include <queue>
@@ -32,7 +35,7 @@ public:
           rng_(rng),
           max_delay_(max_delay) {}
     void push_entry(IO::Envelope msg) {
-        int delay = rng_->draw(0, 100);
+        int delay = rng_->draw(0, max_delay_);
         NetworkItem entry = NetworkItem{msg, clock_->now() + delay};
         wire_.push(entry);
     }
@@ -48,3 +51,5 @@ public:
 };
 
 } // namespace IO
+
+#endif // _NETWORK_H_

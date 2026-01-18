@@ -1,3 +1,6 @@
+#ifndef _MESSAGE_H_
+#define _MESSAGE_H_
+
 #include <variant>
 #include <string>
 
@@ -32,4 +35,6 @@ struct Envelope {
             content == other.content;
     }
 };
-}
+} // namespace IO
+
+#endif // _NETWORH_H_

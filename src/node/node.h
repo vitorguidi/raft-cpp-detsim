@@ -8,6 +8,7 @@
 #include "src/system/system.h"
 #include <iostream>
 #include <thread>
+#include <optional>
 
 namespace Node {
 
@@ -66,6 +67,25 @@ public:
     void dispatch() override;
     Task handle_ping(IO::Envelope msg);
     Task main_loop() override;
+};
+
+enum RaftState {
+    LEADER,
+    FOLLOWER,
+    CANDIDATE,
+};
+
+class RaftNode : public Node {
+private:
+    RaftState state_;
+    int term_, election_timeout_, nr_nodes_;
+    std::optional<int> voted_for_, last_rpc_time_;
+public:
+    RaftNode(int id, std::shared_ptr<System::System> sys, int nr_nodes) : Node(id, sys), nr_nodes_(nr_nodes) {}
+    void dispatch() override;
+    Task main_loop() override;
+    Task handle_append_entries(IO::Envelope msg);
+    Task handle_request_vote(IO::Envelope msg);
 };
 
 } // namespace Node

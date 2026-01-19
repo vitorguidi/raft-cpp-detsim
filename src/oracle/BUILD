@@ -2,12 +2,13 @@ load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 
 cc_library(
-    name = "node",
-    srcs = ["sleeper_node.cc", "pinger_node.cc", "raft_node.cc"],
-    hdrs = ["node.h"],
+    name = "oracle",
+    srcs = ["raft.cc"],
+    hdrs = ["oracle.h"],
     deps = [
-        "//src/scheduler:scheduler",
+        "//src/io:io",
         "//src/system:system",
+        "//src/node:node",
     ],
     visibility = ["//visibility:public"],
 )

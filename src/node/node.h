@@ -34,6 +34,10 @@ public:
         // Since I am returning the coro from within the node, the compiler automagically
         // passes a Node& reference to the promise_type constructor.
         promise_type(Node& node) : sys_(node.system_) {}
+
+        template<typename... Args>
+        promise_type(Node& node, Args&&...) : sys_(node.system_) {}
+
         std::suspend_always initial_suspend() {return {};}
         std::suspend_never final_suspend() noexcept {return {};}
         void return_void() {}
@@ -51,6 +55,17 @@ public:
     SleeperNode(int id, std::shared_ptr<System::System> system) : Node(id, system) {}
     Task main_loop() override;
     void dispatch() override;
+};
+
+class PingerNode : public Node {
+private:
+    int nr_nodes_;
+    std::vector<Task> active_handlers_;
+public:
+    PingerNode(int id, std::shared_ptr<System::System> system, int nr_nodes) :  Node(id, system), nr_nodes_(nr_nodes) {}
+    void dispatch() override;
+    Task handle_ping(IO::Envelope msg);
+    Task main_loop() override;
 };
 
 } // namespace Node

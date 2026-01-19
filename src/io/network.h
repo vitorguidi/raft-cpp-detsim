@@ -39,6 +39,7 @@ public:
         NetworkItem entry = NetworkItem{msg, clock_->now() + delay};
         wire_.push(entry);
     }
+    bool has_messages() {return !wire_.empty();}
     std::vector<IO::Envelope> fetch_ready() {
         std::vector<IO::Envelope> results;
         while(!wire_.empty() && wire_.top().arrival_time <= clock_->now() ) {

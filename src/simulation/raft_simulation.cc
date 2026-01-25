@@ -10,6 +10,8 @@ int main() {
     int seed = 400;
     const int MAX_NETWORK_DELAY = 100;
     const int MAX_TASK_SCHEDULE_JITTER = 100;
+
+
     auto rng = std::make_shared<RNG::UniformDistributionRange>(seed);
     auto clock = std::make_shared<Clock::DeterministicClock>();
     auto executor = std::make_shared<Executor::PriorityQueueExecutor>(clock);
@@ -17,11 +19,15 @@ int main() {
     auto network = std::make_shared<IO::Network>(clock, rng, MAX_NETWORK_DELAY);
     auto system = std::make_shared<System::System>(scheduler, clock, rng, network);
 
-    const int NR_NODES=5;
+    const int NR_NODES = 5;
+    const int ELECTION_TIMEOUT_MIN = 150;
+    const int ELECTION_TIMEOUT_MAX = 300;
+    const int HEARTBEAT_INTERVAL = 50;
     std::vector<std::shared_ptr<Node::Node>> nodes;
 
     for(int i=0;i<5;i++) {
-        auto node = std::make_shared<Node::RaftNode>(i, system, NR_NODES);
+        auto node = std::make_shared<Node::RaftNode>(i, system, NR_NODES,
+            ELECTION_TIMEOUT_MIN, ELECTION_TIMEOUT_MAX, HEARTBEAT_INTERVAL);
         nodes.push_back(node);
         auto main_loop = node->main_loop();
         auto starter_lambda = [main_loop]() {main_loop.h_.resume();};

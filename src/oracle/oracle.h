@@ -1,5 +1,6 @@
 #include "src/node/node.h"
 #include <vector>
+#include <unordered_map>
 
 namespace Oracle {
 
@@ -10,7 +11,8 @@ public:
 
 class RaftOracle : public Oracle {
 private:
-    std::vector<std::shared_ptr<Node::Node>> nodes_;
+    std::vector<std::shared_ptr<Node::RaftNode>> nodes_;
+    std::unordered_map<int, int> leader_per_term_;  // term -> node_id
     void enforce_election_safety();
 public:
     void enforce_invariants() override;

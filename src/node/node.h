@@ -77,15 +77,30 @@ enum RaftState {
 
 class RaftNode : public Node {
 private:
-    RaftState state_;
-    int term_, election_timeout_, nr_nodes_;
-    std::optional<int> voted_for_, last_rpc_time_;
+    RaftState state_ = FOLLOWER;
+    int term_ = 0;
+    int nr_nodes_;
+    std::optional<int> voted_for_;
+    int votes_received_ = 0;
+    long long last_heartbeat_time_ = 0;
+    int election_timeout_min_;
+    int election_timeout_max_;
+    int heartbeat_interval_;
 public:
-    RaftNode(int id, std::shared_ptr<System::System> sys, int nr_nodes) : Node(id, sys), nr_nodes_(nr_nodes) {}
+    RaftNode(int id, std::shared_ptr<System::System> sys, int nr_nodes,
+             int election_timeout_min, int election_timeout_max, int heartbeat_interval)
+        : Node(id, sys), nr_nodes_(nr_nodes),
+          election_timeout_min_(election_timeout_min),
+          election_timeout_max_(election_timeout_max),
+          heartbeat_interval_(heartbeat_interval) {}
     void dispatch() override;
     Task main_loop() override;
     Task handle_append_entries(IO::Envelope msg);
     Task handle_request_vote(IO::Envelope msg);
+
+    // Getters for oracle to inspect state
+    RaftState get_state() const { return state_; }
+    int get_term() const { return term_; }
 };
 
 } // namespace Node

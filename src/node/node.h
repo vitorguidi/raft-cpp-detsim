@@ -98,9 +98,11 @@ public:
     Task handle_append_entries(IO::Envelope msg);
     Task handle_request_vote(IO::Envelope msg);
 
-    // Getters for oracle to inspect state
+    // Getters for oracle/fuzzer to inspect state
     RaftState get_state() const { return state_; }
     int get_term() const { return term_; }
+    std::optional<int> get_voted_for() const { return voted_for_; }
+    int get_votes_received() const { return votes_received_; }
 };
 
 } // namespace Node

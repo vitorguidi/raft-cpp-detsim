@@ -11,3 +11,13 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "state",
+    srcs = ["state.cc"],
+    hdrs = ["state.h"],
+    deps = [
+        "//src/node",
+    ],
+    visibility = ["//visibility:public"],
+)

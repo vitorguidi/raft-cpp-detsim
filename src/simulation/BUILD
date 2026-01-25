@@ -17,7 +17,7 @@ cc_library(
     hdrs = ["simulation_harness.h"],
     deps = [
         ":fuzz_input",
-        "//src/state:state",
+        "//src/node:state",
         "//src/rng:rng",
         "//src/clock:clock",
         "//src/executor:executor",

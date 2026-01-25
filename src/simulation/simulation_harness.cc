@@ -8,7 +8,7 @@
 #include "src/node/node.h"
 #include "src/routing/router.h"
 #include "src/oracle/oracle.h"
-#include "src/state/state.h"
+#include "src/node/state.h"
 #include <stdexcept>
 #include <iostream>
 #include <sstream>

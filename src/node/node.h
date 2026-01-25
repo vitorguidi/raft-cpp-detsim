@@ -51,24 +51,6 @@ public:
 
 };
 
-class SleeperNode : public Node {
-public:
-    SleeperNode(int id, std::shared_ptr<System::System> system) : Node(id, system) {}
-    Task main_loop() override;
-    void dispatch() override;
-};
-
-class PingerNode : public Node {
-private:
-    int nr_nodes_;
-    std::vector<Task> active_handlers_;
-public:
-    PingerNode(int id, std::shared_ptr<System::System> system, int nr_nodes) :  Node(id, system), nr_nodes_(nr_nodes) {}
-    void dispatch() override;
-    Task handle_ping(IO::Envelope msg);
-    Task main_loop() override;
-};
-
 enum RaftState {
     LEADER,
     FOLLOWER,

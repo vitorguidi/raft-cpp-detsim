@@ -3,7 +3,7 @@ load("@rules_cc//cc:cc_library.bzl", "cc_library")
 
 cc_library(
     name = "node",
-    srcs = ["sleeper_node.cc", "pinger_node.cc", "raft_node.cc"],
+    srcs = ["raft_node.cc"],
     hdrs = ["node.h"],
     deps = [
         "//src/scheduler:scheduler",
